@@ -71,7 +71,7 @@ notes=(
 
 # Generate random column order (first name is always included)
 indices=(0)  # First name is always first
-for ((i=1; i<=num_columns; i++)); do
+for ((i=1; i<num_columns; i++)); do
     indices+=($i)
 done
 

@@ -2,18 +2,15 @@
 
 A streamlined guest list management tool for music venues, built with Next.js and Supabase. The goal is simple: take CSV guest lists from venues and turn them into easily shareable, standardized lists.
 
-## Why This Stack?
-
-I wanted to build something that's both powerful and maintainable. The tech choices reflect that:
+## The Stack
 
 ### Frontend Stack
-- ✅ Next.js 14 (App Router)
+- ✅ Next.js 15
 - ✅ TypeScript
 - ✅ Tailwind CSS
 - ✅ Shadcn/UI Components
-- ✅ Framer Motion (Page Transitions)
 
-Next.js was a no-brainer. The new App Router gives us a solid foundation for both static and dynamic routes, plus built-in API routes eliminate the need for a separate backend service. TypeScript keeps our code type-safe and maintainable, while Tailwind and Shadcn/UI let us build a beautiful UI without reinventing the wheel.
+The new App Router gives us a solid foundation for both static and dynamic routes, plus built-in API routes eliminate the need for a separate backend service. TypeScript keeps our code type-safe and maintainable, while Tailwind and Shadcn/UI let us build a beautiful UI without reinventing the wheel.
 
 ### Backend Infrastructure
 - ✅ Supabase (PostgreSQL)
@@ -71,7 +68,6 @@ interface GuestList {
   created_at: string;        // Timestamp
   original_filename: string; // Original CSV name
   s3_key: string;           // S3 file reference
-  share_token: string;      // Public access token
   event_date: string;       // Event date
   status: 'draft' | 'ready' // Processing status
 }
@@ -98,25 +94,21 @@ The schema is designed to be flexible yet structured. Each guest list can be in 
 - ✅ S3 Integration with Presigned URLs
 - ✅ Drag-and-drop Upload Interface
 - ✅ Progress Indicator
-- ⬜ File Validation
 
 #### 2. Column Mapping
 - ✅ Interactive Column Mapper
 - ✅ Smart Column Type Detection
 - ✅ Required Field Validation
-- ⬜ Preview Capability
 
 #### 3. Data Storage
 - ✅ Database Schema
 - ✅ Batch Processing
 - ✅ Error Handling
-- ⬜ Duplicate Detection
 
 #### 4. Sharable Links
 - ✅ Token Generation
 - ✅ Public View Interface
-- ✅ Mobile Responsive Design
-- ⬜ Access Controls
+
 ## Next Steps
 
 1. **Enhanced Validation**
