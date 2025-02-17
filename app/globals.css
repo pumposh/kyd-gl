@@ -62,3 +62,13 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Animation container utilities */
+.flex-animation-container {
+  @apply relative;
+}
+
+.flex-animation-container .container,
+.flex-animation-container *:not(.container *) {
+  @apply flex flex-col flex-grow;
+}

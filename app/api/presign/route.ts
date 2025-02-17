@@ -1,9 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { S3Service } from '@/utils/s3';
 
-export async function POST(request: NextRequest) {
+export async function POST(req: Request) {
   try {
-    const { filename } = await request.json();
+    const { filename, operation = 'write' } = await req.json() as {
+      filename: string
+      operation?: 'write' | 'read'
+    }
     
     if (!filename) {
       return NextResponse.json(
@@ -12,20 +15,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!filename.endsWith('.csv')) {
-      return NextResponse.json(
-        { error: 'Only CSV files are allowed' },
-        { status: 400 }
-      );
-    }
-
-    const { url, key } = await S3Service.getPresignedUploadUrl(filename);
+    const { url, key } = await S3Service.getSignedUrl(filename, operation);
     
     return NextResponse.json({ url, key });
   } catch (error) {
     console.error('Presign error:', error);
     return NextResponse.json(
-      { error: 'Failed to generate upload URL' },
+      { error: 'Failed to generate signed URL' },
       { status: 500 }
     );
   }

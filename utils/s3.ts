@@ -1,5 +1,5 @@
-import { S3Client, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { S3Client, PutObjectCommand, DeleteObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
+import { getSignedUrl as awsGetSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { v4 as uuidv4 } from 'uuid';
 
 const s3Client = new S3Client({
@@ -19,14 +19,14 @@ export type PresignedUpload = {
 
 export class S3Service {
   static async getPresignedUploadUrl(filename: string): Promise<PresignedUpload> {
-    const key = `${uuidv4()}-${filename}`;
+    const key = `guest-lists/${uuidv4()}-${filename}`;
     const command = new PutObjectCommand({
       Bucket: BUCKET_NAME,
       Key: key,
       ContentType: 'text/csv',
     });
 
-    const url = await getSignedUrl(s3Client, command, { expiresIn: 3600 });
+    const url = await awsGetSignedUrl(s3Client, command, { expiresIn: 3600 });
     return { url, key };
   }
 
@@ -37,5 +37,15 @@ export class S3Service {
         Key: key,
       })
     );
+  }
+
+  static async getSignedUrl(key: string, operation: 'read' | 'write' = 'write') {
+    const command = operation === 'write' 
+      ? new PutObjectCommand({ Bucket: BUCKET_NAME, Key: key })
+      : new GetObjectCommand({ Bucket: BUCKET_NAME, Key: key });
+    
+    const url = await awsGetSignedUrl(s3Client, command, { expiresIn: 3600 });
+    
+    return { url, key };
   }
 } 
