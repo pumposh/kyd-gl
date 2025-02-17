@@ -20,7 +20,7 @@ class ApiError extends Error {
 }
 
 export class GuestListApi {
-  static async createGuestList(params: CreateGuestListParams): Promise<GuestList> {
+  static async createGuestList(params: CreateGuestListParams): Promise<{ id: string }> {
     try {
       const response = await fetch('/api/guest-lists', {
         method: 'POST',

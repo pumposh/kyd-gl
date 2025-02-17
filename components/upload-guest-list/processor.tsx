@@ -460,12 +460,15 @@ export const GuestListProcessor = forwardRef<{ columnPositions: ColumnPositions 
         const s3Key = await GuestListApi.uploadFile(file, setUploadProgress);
         
         if (!existingGuestList) {
-          await GuestListApi.createGuestList({
+          const { id } = await GuestListApi.createGuestList({
             original_filename: file.name,
             s3_key: s3Key,
             status: 'draft',
             event_date: new Date().toISOString(),
           });
+          
+          // Route to the new guest list page
+          router.push(`/events/${id}`);
         }
       } catch (error) {
         console.error('Upload error:', error);
